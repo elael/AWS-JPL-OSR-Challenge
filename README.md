@@ -223,8 +223,19 @@ slack channel:  [awsjplroverchallenge.slack.com](https://awsjplroverchallenge.sl
 ```
 git clone https://github.com/joebarbere/AWS-JPL-OSR-Challenge.git
 cd AWS-JPL-OSR-Challenge
-git checkout docker
-docker build -t awsjpl .
+git checkout docker-cuda
+```
+
+Download the following in the docker-cuda directory
+* cuda_9.0.176_384.81_linux.run
+* cudnn-9.0-linux-x64-v7.6.5.32.tgz
+
+CUDA 9.0 can be found here: https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_384.81_linux-run  
+
+CUDNN needs to be downloaded from https://developer.nvidia.com/rdp/cudnn-download (requires Nvidia developer account)  
+
+```
+docker build -t awsjpl-cuda .
 docker run  -p 5900:5900 \
             -p 9000:9000 \
             -p 6080:80 \
@@ -233,15 +244,9 @@ docker run  -p 5900:5900 \
             -v /home/yourusername/dockervolumes/awsjpl:/data \
             -v /home/yourusername/GitHub/AWS-JPL-OSR-Challenge:/home/ubuntu/catkin_ws/src \
             -v /home/yourusername/dockervolumes/awsjpl-gazebo:/root/.gazebo \
-            awsjpl
+            --gpus all \
+            awsjpl-cuda
 firefox http://localhost:6080
-```
-
-If you are trying to get GPU acceleration to work you will need to replace awsjpl with
-
-```
---gpus all \
-awsjpl
 ```
 
 Open a terminal in the VNC tab, and run the following commands (jupyter is optional)
