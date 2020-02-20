@@ -1,14 +1,9 @@
-FROM tensorflow/tensorflow:latest-gpu-py3
+FROM joebarbere/ubuntu-desktop-lxde-vnc
 LABEL author="Joe Barbere"
-
-# set timezone
-RUN echo 'Etc/UTC' > /etc/timezone \
-	&& ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 RUN apt update && apt install -y \
 	dirmngr \
 	wget \
-	tzdata \
 	&& rm -rf /var/lib/apt/lists/*
 
 # adding keys for ROS
@@ -66,24 +61,3 @@ RUN sudo apt-get install -y elasticsearch logstash kibana && rm -rf /var/lib/apt
 
 # install additional useful python packages
 RUN pip3 install elasticsearch python-logstash jupyter tornado && pip3 install jupyter-tensorboard
-
-# install cuda/cudnn
-COPY cuda_9.0.176_384.81_linux.run /tmp
-COPY cudnn-9.0-linux-x64-v7.6.5.32.tgz /tmp
-
-WORKDIR /tmp
-
-RUN chmod +x cuda_9.0.176_384.81_linux.run
-RUN ./cuda_9.0.176_384.81_linux.run --silent --toolkit --override
-
-RUN touch ~/.bashrc
-RUN echo 'export PATH=/usr/local/cuda-9.0/bin:$PATH' >> ~/.bashrc \
-  && echo 'export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc \
-  && echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc \
-  && . ~/.bashrc
-
-RUN tar -xzvf cudnn-9.0-linux-x64-v7.6.5.32.tgz
-
-RUN cp -P cuda/include/cudnn.h /usr/local/cuda-9.0/include
-RUN cp -P cuda/lib64/libcudnn* /usr/local/cuda-9.0/lib64/
-RUN chmod a+r /usr/local/cuda-9.0/lib64/libcudnn*
