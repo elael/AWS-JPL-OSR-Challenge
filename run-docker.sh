@@ -6,4 +6,5 @@ docker run  -p 5900:5900 \
             -v /home/joebarbere/dockervolumes/awsjpl:/data \
             -v /home/joebarbere/GitHub/AWS-JPL-OSR-Challenge:/home/ubuntu/catkin_ws/src \
             -v /home/joebarbere/dockervolumes/awsjpl-gazebo:/root/.gazebo \
-            awsjpl
+            --gpus all \
+            awsjpl-cuda
