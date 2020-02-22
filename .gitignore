@@ -7,5 +7,4 @@ build/
 install/
 log/
 CMakeLists.txt
-run-docker.sh
 build-docker-image.sh
