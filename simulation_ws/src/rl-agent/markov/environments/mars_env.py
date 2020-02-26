@@ -342,7 +342,9 @@ class MarsEnv(gym.Env):
               'CT:%.2f' % self.collision_threshold,             # Collision Threshold
               'CTCP:%f' % self.closer_to_checkpoint,            # Is closer to checkpoint
               'PSR:%f' % self.power_supply_range,              # Steps remaining in Episode
-              'IMU:%f' % avg_imu)
+              'IMU:%f' % avg_imu,
+              'X:%f' % self.x,
+              'Y:%f' % self.y)
 
         try:
             extra = {
@@ -355,7 +357,9 @@ class MarsEnv(gym.Env):
                 'CT': self.collision_threshold,
                 'CTCP': self.closer_to_checkpoint,
                 'PSR': self.power_supply_range,
-                'IMU': avg_imu
+                'IMU': avg_imu,
+                'X': self.x,
+                'Y': self.y
             }
             elk_logger.info('reward_function', extra=extra)
         except Exception as err:
